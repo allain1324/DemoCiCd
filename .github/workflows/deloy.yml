@@ -37,10 +37,10 @@ jobs:
           ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.VPS_IP }}:5000/vue3-app:latest .
+        run: docker build -t ${{ secrets.DOMAIN_DOCKER_REGISTRY }}/vue3-app:latest .
 
       - name: Push Docker Image to VPS Registry
-        run: docker push ${{ secrets.VPS_IP }}:5000/vue3-app:latest
+        run: docker push ${{ secrets.DOMAIN_DOCKER_REGISTRY }}/vue3-app:latest
 
       - name: Deploy to VPS
         env:
@@ -48,8 +48,8 @@ jobs:
           VPS_USER: 'root'
         run: |
           ssh -i ~/.ssh/id_ed25519 $VPS_USER@$VPS_IP << EOF
-            docker pull ${{ secrets.VPS_IP }}:5000/vue3-app:latest
+            docker pull ${{ secrets.DOMAIN_DOCKER_REGISTRY }}/vue3-app:latest
             docker stop vue3-app || true
             docker rm vue3-app || true
-            docker run -d --name vue3-app -p 80:80 ${{ secrets.VPS_IP }}:5000/vue3-app:latest
+            docker run -d --name vue3-app -p ${{ secrets.PORT }}:${{ secrets.PORT }} ${{ secrets.DOMAIN_DOCKER_REGISTRY }}/vue3-app:latest
           EOF

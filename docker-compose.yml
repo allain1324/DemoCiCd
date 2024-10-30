@@ -1,9 +1,0 @@
-version: '3.8'
-
-services:
-  vue3-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3002:3002' # Ánh xạ port 3002
