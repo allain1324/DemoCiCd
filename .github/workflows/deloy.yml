@@ -3,7 +3,7 @@ name: Vue 3 CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
